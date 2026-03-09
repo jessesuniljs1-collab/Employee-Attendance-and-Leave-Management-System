@@ -1,0 +1,102 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "Rahul Sharma",
+      "email": "rahul.sharma@lt.com",
+      "phone": "+91 98765 43210",
+      "department": "Information Technology",
+      "position": "Senior Software Developer",
+      "joinDate": "2022-03-15",
+      "status": "Active"
+    },
+    {
+      "id": 2,
+      "name": "Anita Patel",
+      "email": "anita.patel@lt.com",
+      "phone": "+91 87654 32109",
+      "department": "Human Resources",
+      "position": "HR Manager",
+      "joinDate": "2021-06-01",
+      "status": "Active"
+    },
+    {
+      "id": 3,
+      "name": "Karthik Raj",
+      "email": "karthik.raj@lt.com",
+      "phone": "+91 76543 21098",
+      "department": "Finance",
+      "position": "Finance Analyst",
+      "joinDate": "2023-01-10",
+      "status": "Active"
+    },
+    {
+      "name": "Michael Chen",
+      "email": "michael.chen@lt.com",
+      "phone": "1234567890",
+      "department": "Information Technology",
+      "position": "Software Engineer",
+      "status": "Active",
+      "joinDate": "2026-03-09",
+      "id": 4
+    },
+    {
+      "name": "Sarah Lopez",
+      "email": "sarah.lopez@lt.com",
+      "phone": "2345678901",
+      "department": "Finance",
+      "position": "Lead Designer",
+      "status": "Active",
+      "joinDate": "2026-03-09",
+      "id": 5
+    },
+    {
+      "name": "David Miller",
+      "email": "david.miller@lt.com",
+      "phone": "3456789012",
+      "department": "Human Resources",
+      "position": "HR Specialist",
+      "status": "Active",
+      "joinDate": "2026-03-09",
+      "id": 6
+    }
+  ],
+  "leaves": [
+    {
+      "id": 1,
+      "employeeId": 1,
+      "employeeName": "Rahul Sharma",
+      "fromDate": "2026-01-25",
+      "toDate": "2026-01-26",
+      "type": "Sick Leave",
+      "reason": "Fever and cold, need complete bed rest as per doctor advice",
+      "status": "Approved",
+      "submittedOn": "2026-01-24",
+      "comment": null
+    },
+    {
+      "id": 2,
+      "employeeId": 2,
+      "employeeName": "Anita Patel",
+      "fromDate": "2026-01-28",
+      "toDate": "2026-01-29",
+      "type": "Casual Leave",
+      "reason": "Family function to attend, travel required out of city",
+      "status": "Pending",
+      "submittedOn": "2026-01-25",
+      "comment": null
+    },
+    {
+      "employeeId": 0,
+      "employeeName": "Michael Chen",
+      "fromDate": "60310-02-20",
+      "toDate": "60312-02-20",
+      "type": "Sick Leave",
+      "reason": "Feeling unwell, need rest for a few days.",
+      "status": "Approved",
+      "submittedOn": "2026-03-09",
+      "comment": null,
+      "id": 3
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+<!-- ════════════════════════════════════════
+     ATTENDANCE TRACKER
+     [appHighlightAbsent] directive applied to each row
+════════════════════════════════════════ -->
+
+<div class="page-header">
+  <div>
+    <h2>Mark Attendance</h2>
+    <p>{{ todayStr }}</p>
+  </div>
+</div>
+
+<!-- Summary Chips -->
+<div class="summary-chips" style="margin-bottom:18px">
+  <div class="summary-chip chip-approved">✅ Present: {{ summary.present }}</div>
+  <div class="summary-chip chip-rejected">❌ Absent: {{ summary.absent }}</div>
+  <div class="summary-chip chip-pending">⏳ Half-Day: {{ summary.halfDay }}</div>
+  <div class="summary-chip"
+    style="background:rgba(71,85,105,0.12);border:1px solid rgba(71,85,105,0.22);color:var(--text-muted)">
+    ○ Unmarked: {{ summary.unmarked }}
+  </div>
+</div>
+
+<!-- Attendance Table -->
+<div class="glass-card" style="max-width:860px">
+
+  <!-- Header -->
+  <div class="emp-row emp-header">
+    <div style="width:36px;flex-shrink:0"></div>
+    <div style="flex:1">Employee</div>
+    <div style="min-width:220px">Action</div>
+    <div style="min-width:130px">Status</div>
+  </div>
+
+  @for (emp of employees; track emp.id; let i = $index) {
+  <!--
+      [appHighlightAbsent] — Custom HighlightAbsentDirective.
+      Adds .row-present / .row-absent / .row-half-day CSS class.
+    -->
+  <div class="att-row" [appHighlightAbsent]="emp.attStatus">
+
+    <!-- Avatar -->
+    <div class="emp-avatar" [ngClass]="getAvatarClass(i)">{{ emp.name.charAt(0) }}</div>
+
+    <!-- Name -->
+    <strong>{{ emp.name }}</strong>
+
+    <!-- Action Buttons -->
+    <div style="display:flex;gap:6px;min-width:220px">
+      <button class="btn-present" (click)="markPresent(emp)">
+        <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">check_circle</span>
+        Present
+      </button>
+      <button class="btn-absent" (click)="markAbsent(emp)">
+        <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">cancel</span>
+        Absent
+      </button>
+      <button class="btn-halfday" (click)="markHalfDay(emp)" title="Half Day">
+        <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">timelapse</span>
+      </button>
+    </div>
+
+    <!-- Status Badge -->
+    <div class="att-status">
+      <span class="status-badge" [class.present]="emp.attStatus === 'Present'"
+        [class.absent]="emp.attStatus === 'Absent'" [class.halfday]="emp.attStatus === 'Half-Day'"
+        [class.unmarked]="!emp.attStatus">
+        <span class="material-icons-round" style="font-size:11px;font-family:'Material Icons Round'">
+          {{ emp.attStatus === 'Present' ? 'check_circle' : emp.attStatus === 'Absent' ? 'cancel' : emp.attStatus ===
+          'Half-Day' ? 'timelapse' : 'radio_button_unchecked' }}
+        </span>
+        {{ emp.attStatus || 'Not Marked' }}
+      </span>
+    </div>
+
+  </div>
+  }
+
+</div>

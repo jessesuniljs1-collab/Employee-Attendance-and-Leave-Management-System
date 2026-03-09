@@ -1,0 +1,78 @@
+<!-- ════════════════════════════════════════
+     EMPLOYEE DETAIL — /employees/:id
+════════════════════════════════════════ -->
+
+<div class="page-header">
+    <div>
+        <h2>Employee Profile</h2>
+        <p>View detailed information for this employee</p>
+    </div>
+    <button class="btn-ghost" (click)="goBack()">
+        <span class="material-icons-round" style="font-size:16px;font-family:'Material Icons Round'">arrow_back</span>
+        Back to List
+    </button>
+</div>
+
+@if (employee$ | async; as emp) {
+
+<div class="glass-card" style="max-width:680px;animation:fadeSlideUp 0.35s var(--ease-smooth) both">
+
+    <!-- Profile Header -->
+    <div class="emp-detail-header">
+        <div class="emp-avatar-lg" [ngClass]="getAvatarClass(emp.id)">
+            {{ emp.name.charAt(0) }}
+        </div>
+        <div>
+            <h3>{{ emp.name }}</h3>
+            <p>{{ emp.position }} &nbsp;·&nbsp; {{ emp.department }}</p>
+        </div>
+        <div style="margin-left:auto">
+            <span class="status-badge" [class.present]="emp.status === 'Active'"
+                [class.absent]="emp.status === 'Inactive'">
+                {{ emp.status }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Detail Grid -->
+    <div class="emp-detail-grid">
+        <div class="detail-item">
+            <label>Email Address</label>
+            <span>{{ emp.email }}</span>
+        </div>
+        <div class="detail-item">
+            <label>Phone Number</label>
+            <span>{{ emp.phone }}</span>
+        </div>
+        <div class="detail-item">
+            <label>Department</label>
+            <span>{{ emp.department }}</span>
+        </div>
+        <div class="detail-item">
+            <label>Position / Role</label>
+            <span>{{ emp.position }}</span>
+        </div>
+        <div class="detail-item">
+            <label>Date Joined</label>
+            <span>{{ emp.joinDate | date:'MMMM d, yyyy' }}</span>
+        </div>
+        <div class="detail-item">
+            <label>Employee ID</label>
+            <span>#EMP-{{ emp.id }}</span>
+        </div>
+    </div>
+
+</div>
+
+} @else {
+
+<div class="glass-card" style="padding:40px;text-align:center;max-width:680px">
+    <span class="material-icons-round"
+        style="font-size:48px;font-family:'Material Icons Round';opacity:0.3;display:block;margin-bottom:12px">
+        person_off
+    </span>
+    <p style="color:var(--text-muted)">Employee not found. The ID may be invalid.</p>
+    <button (click)="goBack()" style="margin-top:16px">Back to List</button>
+</div>
+
+}

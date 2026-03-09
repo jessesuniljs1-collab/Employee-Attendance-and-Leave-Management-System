@@ -1,0 +1,109 @@
+<!-- ════════════════════════════════════════
+     LEAVE APPROVAL — HR Module (guarded route)
+════════════════════════════════════════ -->
+
+<div class="page-header">
+  <div>
+    <h2>Leave Approvals</h2>
+    <p>Review and action pending leave requests</p>
+  </div>
+  <div
+    style="display:flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.25);border-radius:100px;">
+    <span class="material-icons-round"
+      style="font-size:16px;font-family:'Material Icons Round';color:#34D399">admin_panel_settings</span>
+    <span style="font-size:12.5px;font-weight:600;color:#34D399">HR Mode Active</span>
+  </div>
+</div>
+
+<!-- Summary Row -->
+<div class="summary-chips" style="margin-bottom:18px">
+  <div class="summary-chip chip-pending">⏳ Pending: {{ pending$ | async }}</div>
+  <div class="summary-chip chip-approved">✅ Approved: {{ approved$ | async }}</div>
+  <div class="summary-chip chip-rejected">❌ Rejected: {{ rejected$ | async }}</div>
+</div>
+
+<!-- Leave Request List -->
+<div class="glass-card" style="max-width:900px">
+
+  @if (requests$ | async; as requests) {
+  @if (requests.length === 0) {
+  <div style="padding:40px;text-align:center;color:var(--text-muted)">
+    <span class="material-icons-round"
+      style="font-size:48px;font-family:'Material Icons Round';opacity:0.3;display:block;margin-bottom:12px">task_alt</span>
+    No leave requests in the system
+  </div>
+  }
+
+  @for (req of requests; track req.id; let i = $index) {
+  <div class="leave-row" [style.animation-delay]="(i * 0.06) + 's'">
+
+    <!-- Request Info -->
+    <div class="leave-info">
+      <strong>{{ req.employeeName }}</strong>
+      <div class="leave-dates">
+        <span class="material-icons-round"
+          style="font-size:13px;font-family:'Material Icons Round'">calendar_today</span>
+        {{ req.fromDate | date:'MMM d, yyyy' }} → {{ req.toDate | date:'MMM d, yyyy' }}
+        <span class="leave-type-chip">{{ req.type }}</span>
+      </div>
+      <div
+        style="font-size:12px;color:var(--text-muted);margin-top:4px;max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+        "{{ req.reason }}"
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="leave-actions">
+
+      @if (req.status === 'Pending') {
+      <button class="btn-approve" [disabled]="processingIds.has(req.id)" (click)="openReview(req.id, false)">
+        <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">check</span>
+        Approve
+      </button>
+      <button class="btn-reject" [disabled]="processingIds.has(req.id)" (click)="openReview(req.id, true)">
+        <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">close</span>
+        Reject
+      </button>
+      }
+
+      <span class="leave-status" [class.pending]="req.status === 'Pending'" [class.approved]="req.status === 'Approved'"
+        [class.rejected]="req.status === 'Rejected'">
+        {{ req.status }}
+      </span>
+
+    </div>
+  </div>
+
+  <!-- Inline Review Panel — shown for the active request -->
+  @if (activeRequestId === req.id) {
+  <div
+    style="padding:16px 18px;background:rgba(30,111,232,0.06);border-top:1px solid rgba(30,111,232,0.15);animation:fadeSlideUp 0.25s var(--ease-smooth) both">
+    <form [formGroup]="reviewForm" (ngSubmit)="confirmAction()" novalidate>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>
+          {{ rejectMode ? 'Rejection Reason (required)' : 'Comment (optional)' }}
+        </label>
+        <textarea formControlName="comment" rows="2"
+          [placeholder]="rejectMode ? 'State your reason for rejection…' : 'Add an optional note…'">
+              </textarea>
+        @if (reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched) {
+        <span class="form-error">A rejection reason (min 5 chars) is required</span>
+        }
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="submit" [class.btn-approve]="!rejectMode" [class.btn-reject]="rejectMode">
+          <span class="material-icons-round" style="font-size:14px;font-family:'Material Icons Round'">
+            {{ rejectMode ? 'close' : 'check' }}
+          </span>
+          Confirm {{ rejectMode ? 'Reject' : 'Approve' }}
+        </button>
+        <button type="button" class="btn-ghost" (click)="cancelReview()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  }
+
+  }
+  }
+
+</div>

@@ -1,0 +1,118 @@
+<!-- ════════════════════════════════════════════════
+     TOP HEADER — L&T Employee Management System
+════════════════════════════════════════════════ -->
+<header class="top-header">
+  <div class="header-left">
+
+    <!-- Brand Logo Block (sits over sidenav) -->
+    <div class="brand-logo">
+
+      <!-- L&T Hexagon SVG Logo -->
+      <div class="brand-icon">
+        <svg width="42" height="42" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1E6FE8" />
+              <stop offset="100%" stop-color="#0EA5E9" />
+            </linearGradient>
+          </defs>
+          <!-- Hexagon base -->
+          <path d="M17 2L30 9.5V24.5L17 32L4 24.5V9.5L17 2Z" fill="url(#logoGrad)" opacity="0.9" />
+          <!-- Inner diamond accent -->
+          <path d="M17 8L24 13.5V20.5L17 26L10 20.5V13.5L17 8Z" fill="none" stroke="rgba(255,255,255,0.40)"
+            stroke-width="1.5" />
+          <!-- Center dot -->
+          <circle cx="17" cy="17" r="2.5" fill="white" opacity="0.9" />
+          <!-- L&T text -->
+          <text x="17" y="20" text-anchor="middle" fill="white" font-size="7" font-weight="900"
+            font-family="Inter,Arial,sans-serif" letter-spacing="0.5">L&T</text>
+        </svg>
+      </div>
+
+      <!-- Full Brand Name -->
+      <div class="brand-name">
+        <span class="main-title">Employee Management System</span>
+      </div>
+    </div><!-- /brand-logo -->
+
+    <!-- Page Title in Header -->
+    <div class="header-center">
+      <div class="header-title">Attendance &amp; Leave Management</div>
+    </div>
+
+  </div><!-- /header-left -->
+
+  <!-- Header Right — HR Mode Toggle Only -->
+  <div class="header-right">
+    <button class="hr-toggle-btn" [class.active]="isHR$ | async" (click)="toggleHRMode()"
+      [title]="(isHR$ | async) ? 'Click to exit HR mode' : 'Click to enable HR mode'">
+      <span class="material-icons-round" style="font-size:16px;font-family:'Material Icons Round'">
+        {{ (isHR$ | async) ? 'admin_panel_settings' : 'manage_accounts' }}
+      </span>
+      {{ (isHR$ | async) ? 'HR Mode: ON' : 'HR Mode' }}
+    </button>
+  </div>
+
+</header><!-- /top-header -->
+
+<!-- ════════════════════════════════════════════════
+     SIDE NAVIGATION
+════════════════════════════════════════════════ -->
+<nav class="sidenav">
+
+  <div class="nav-section-label">Overview</div>
+
+  <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <span class="nav-icon">dashboard</span>
+    Dashboard
+  </a>
+
+  <a class="nav-item" routerLink="/employees" routerLinkActive="active">
+    <span class="nav-icon">group</span>
+    Employees
+  </a>
+
+  <div class="nav-section-label">Attendance</div>
+
+  <a class="nav-item" routerLink="/attendance" routerLinkActive="active">
+    <span class="nav-icon">fact_check</span>
+    Mark Attendance
+  </a>
+
+  <div class="nav-section-label">Leave Management</div>
+
+  <a class="nav-item" routerLink="/leave-request" routerLinkActive="active">
+    <span class="nav-icon">event_note</span>
+    Apply for Leave
+  </a>
+
+  <!-- Leave Approval — HR protected route -->
+  <ng-container *ngIf="isHR$ | async; else lockedNav">
+    <a class="nav-item" routerLink="/leave-approval" routerLinkActive="active">
+      <span class="nav-icon">task_alt</span>
+      Approve Leave
+    </a>
+  </ng-container>
+
+  <ng-template #lockedNav>
+    <div class="nav-item nav-locked" (click)="toggleHRMode()" title="Enable HR Mode to access Leave Approvals">
+      <span class="nav-icon">lock</span>
+      Approve Leave
+      <span class="lock-badge">HR Only</span>
+    </div>
+  </ng-template>
+
+  <div class="nav-spacer"></div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-text">L&T EMS · Angular v20 · Project 23</div>
+  </div>
+
+</nav><!-- /sidenav -->
+
+<!-- ════════════════════════════════════════════════
+     MAIN CONTENT — Router Outlet
+════════════════════════════════════════════════ -->
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>

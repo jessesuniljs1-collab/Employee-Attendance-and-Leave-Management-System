@@ -1,0 +1,77 @@
+<!-- ════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════ -->
+
+<!-- Access Denied Banner (shown when redirected by AuthGuard) -->
+@if (accessDenied) {
+<div class="access-denied-banner">
+  <span class="material-icons-round" style="font-size:20px;font-family:'Material Icons Round'">lock</span>
+  The <strong>Leave Approval</strong> module requires HR access. Enable HR Mode in the header to proceed.
+</div>
+}
+
+<!-- Page Header -->
+<div class="page-header">
+  <div>
+    <h2>Dashboard</h2>
+    <p>{{ today }}</p>
+  </div>
+</div>
+
+<!-- Stat Cards — data from EmployeeService + LeaveService via async pipe -->
+<div class="dashboard-grid">
+
+  <div class="stat-card blue">
+    <span class="stat-icon">group</span>
+    <h3>Total Employees</h3>
+    <p>{{ totalEmployees$ | async }}</p>
+  </div>
+
+  <div class="stat-card green">
+    <span class="stat-icon">check_circle</span>
+    <h3>On Approved Leave</h3>
+    <p>{{ approvedLeaves$ | async }}</p>
+  </div>
+
+  <div class="stat-card orange">
+    <span class="stat-icon">pending_actions</span>
+    <h3>Pending Requests</h3>
+    <p>{{ pendingLeaves$ | async }}</p>
+  </div>
+
+  <div class="stat-card cyan">
+    <span class="stat-icon">event_busy</span>
+    <h3>Leave Requests</h3>
+    <p>{{ (pendingLeaves$ | async)! + (approvedLeaves$ | async)! }}</p>
+  </div>
+
+</div>
+
+<!-- Welcome Card -->
+<div class="card" style="max-width:760px;margin-bottom:18px">
+  <h2>👋 Welcome to L&T Employee Management System</h2>
+  <p>
+    This system enables HR teams and managers to track daily attendance, manage leave applications,
+    and maintain a complete employee directory. Navigate using the sidebar to explore each module.
+    Enable <strong>HR Mode</strong> in the header to access the Leave Approval module.
+  </p>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+  <a routerLink="/attendance"
+    style="display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:100px;background:var(--grad-btn);color:white;font-size:13px;font-weight:600;text-decoration:none;box-shadow:0 4px 14px rgba(30,111,232,0.40);">
+    <span class="material-icons-round" style="font-size:17px;font-family:'Material Icons Round'">fact_check</span>
+    Mark Attendance
+  </a>
+  <a routerLink="/leave-request"
+    style="display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:100px;background:var(--grad-card4);color:white;font-size:13px;font-weight:600;text-decoration:none;box-shadow:0 4px 14px rgba(14,165,233,0.40);">
+    <span class="material-icons-round" style="font-size:17px;font-family:'Material Icons Round'">event_note</span>
+    Apply for Leave
+  </a>
+  <a routerLink="/employees"
+    style="display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:13px;font-weight:600;text-decoration:none;">
+    <span class="material-icons-round" style="font-size:17px;font-family:'Material Icons Round'">group</span>
+    View Employees
+  </a>
+</div>
